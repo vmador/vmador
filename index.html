@@ -8,41 +8,41 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/vmador/icon-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/vmador/icon-512x512.png">
     <link rel="apple-touch-icon" href="/vmador/icon-192x192.png">
+    
+    <!-- Metadatos optimizados -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#fffff">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"> <!-- Barra blanca translúcida -->
+    <meta name="theme-color" content="#FFFFFF"> <!-- Blanco como color del tema -->
     <meta name="apple-mobile-web-app-title" content="vmador PWA">
-    <meta name="mobile-web-app-capable" content="yes">
     <meta name="description" content="vmador Progressive Web App">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            background-color: #ffffff;
-        }
-        iframe {
-            width: 100lvw;
-            height: 100lvh;
-            border: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-        @supports(padding: max(0px)) {
-            body, iframe {
-                padding-top: env(safe-area-inset-top);
-                height: calc(100lvh - env(safe-area-inset-top));
-            }
-        }
-    </style>
 </head>
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color: #ffffff;
+    }
+    iframe {
+        width: 100vw; /* Corrección de unidades */
+        height: 100vh; /* Corrección de unidades */
+        border: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    @supports(padding: max(0px)) {
+        body, iframe {
+            padding-top: env(safe-area-inset-top);
+            height: calc(100vh - env(safe-area-inset-top)); /* Corrección de unidades */
+        }
+    }
+</style>
+
 <body>
     <iframe id="framerContent" src="https://amadorcampos.framer.website" allowfullscreen allow="geolocation; camera; microphone; storage-access"></iframe>
     <script>
