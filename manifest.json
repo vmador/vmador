@@ -5,8 +5,8 @@
     "start_url": "/vmador/",
     "scope": "/vmador/",
     "display": "standalone",
-    "background_color": "#fffff",
-    "theme_color": "#ffffff",
+    "background_color": "#FFFFFF",  // Corrección aquí
+    "theme_color": "#FFFFFF",
     "icons": [
         {
             "src": "/vmador/icon-192x192.png",
