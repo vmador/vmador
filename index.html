@@ -11,7 +11,7 @@
     
     <!-- Metadatos optimizados -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default"> <!-- Barra blanca translúcida -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"> <!-- Cambiar a 'default' o 'white' si es necesario -->
     <meta name="theme-color" content="#FFFFFF"> <!-- Blanco como color del tema -->
     <meta name="apple-mobile-web-app-title" content="vmador PWA">
     <meta name="description" content="vmador Progressive Web App">
@@ -45,38 +45,28 @@
 
 <body>
     <iframe id="framerContent" src="https://amadorcampos.framer.website" allowfullscreen allow="geolocation; camera; microphone; storage-access"></iframe>
+
     <script>
-    function sendMessageToIframe(message) {
-        const iframe = document.getElementById('framerContent');
-        iframe.contentWindow.postMessage(message, 'https://amadorcampos.framer.website');
-    }
-    
-    window.addEventListener('message', function(event) {
-        if (event.origin !== "https://amadorcampos.framer.website") return;
+        function sendMessageToIframe(message) {
+            const iframe = document.getElementById('framerContent');
+            iframe.contentWindow.postMessage(message, 'https://amadorcampos.framer.website');
+        }
         
-        if (event.data.type === 'setSessionData') {
-            localStorage.setItem('sessionData', JSON.stringify(event.data.sessionData));
-        } else if (event.data.type === 'getSessionData') {
-            const sessionData = localStorage.getItem('sessionData');
-            sendMessageToIframe({
-                type: 'sessionDataResponse',
-                sessionData: sessionData ? JSON.parse(sessionData) : null
-            });
-        }
-    }, false);
+        window.addEventListener('message', function(event) {
+            if (event.origin !== "https://amadorcampos.framer.website") return;
+            
+            if (event.data.type === 'setSessionData') {
+                localStorage.setItem('sessionData', JSON.stringify(event.data.sessionData));
+            } else if (event.data.type === 'getSessionData') {
+                const sessionData = localStorage.getItem('sessionData');
+                sendMessageToIframe({
+                    type: 'sessionDataResponse',
+                    sessionData: sessionData ? JSON.parse(sessionData) : null
+                });
+            }
+        }, false);
 
-    window.addEventListener('load', function() {
-        const sessionData = localStorage.getItem('sessionData');
-        if (sessionData) {
-            sendMessageToIframe({
-                type: 'restoreSession',
-                sessionData: JSON.parse(sessionData)
-            });
-        }
-    });
-
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
+        window.addEventListener('load', function() {
             const sessionData = localStorage.getItem('sessionData');
             if (sessionData) {
                 sendMessageToIframe({
@@ -84,18 +74,29 @@
                     sessionData: JSON.parse(sessionData)
                 });
             }
-        }
-    });
-
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/vmador/service-worker.js').then(function(registration) {
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
-                console.log('ServiceWorker registration failed: ', err);
-            });
         });
-    }
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                const sessionData = localStorage.getItem('sessionData');
+                if (sessionData) {
+                    sendMessageToIframe({
+                        type: 'restoreSession',
+                        sessionData: JSON.parse(sessionData)
+                    });
+                }
+            }
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/vmador/service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 </html>
